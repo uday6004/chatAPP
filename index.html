@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resilient Chat Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+
+    <header class="bg-white border-b p-4 flex justify-between items-center shadow-sm">
+        <div>
+            <h1 class="text-xl font-bold text-indigo-600">ChatOps v1.0</h1>
+            <p class="text-xs text-gray-500">Learning Outcomes & UI Refinement</p>
+        </div>
+        <div class="flex space-x-6">
+            <div class="text-right">
+                <p class="text-xs uppercase text-gray-400 font-bold">System Load</p>
+                <p id="load-val" class="text-lg font-mono font-bold text-green-500">12%</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs uppercase text-gray-400 font-bold">Search Accuracy</p>
+                <p class="text-lg font-mono font-bold text-indigo-500">98.4%</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-6 space-y-4" id="chat-window">
+        <div class="flex justify-center">
+            <span class="bg-gray-200 text-gray-600 text-[10px] px-2 py-1 rounded-full uppercase tracking-widest font-bold">Session Started: Proactive Monitoring Active</span>
+        </div>
+        
+        <div class="flex flex-col items-start">
+            <div class="bg-white p-3 rounded-lg shadow-sm max-w-md border-l-4 border-indigo-500">
+                <p class="text-sm text-gray-800">Welcome. Infrastructure thresholds are verified. How can I assist with the maintenance roadmap today?</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white p-4 border-t">
+        <div class="max-w-4xl mx-auto flex space-x-4">
+            <input type="text" id="user-input" placeholder="Test the UI journey..." class="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button onclick="sendMessage()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">Send</button>
+        </div>
+        <p class="text-center text-[10px] text-gray-400 mt-2 italic">Metrics respond to live traffic fluctuations.</p>
+    </footer>
+
+    <script>
+        let currentLoad = 12;
+
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chatWindow = document.getElementById('chat-window');
+            const loadVal = document.getElementById('load-val');
+
+            if (input.value.trim() === "") return;
+
+            // 1. Add User Message
+            const userMsg = `<div class="flex flex-col items-end">
+                <div class="bg-indigo-600 text-white p-3 rounded-lg shadow-sm max-w-md">
+                    <p class="text-sm">${input.value}</p>
+                </div>
+            </div>`;
+            chatWindow.innerHTML += userMsg;
+
+            // 2. Simulate Proactive Load Increase
+            currentLoad += Math.floor(Math.random() * 10) + 5;
+            loadVal.innerText = currentLoad + '%';
+            
+            if (currentLoad > 70) {
+                loadVal.classList.replace('text-green-500', 'text-red-500');
+                chatWindow.innerHTML += `<div class="flex justify-center"><span class="bg-red-100 text-red-600 text-[10px] px-2 py-1 rounded">⚠️ AUTO-SCALING TRIGGERED</span></div>`;
+            }
+
+            // 3. Automated Response
+            setTimeout(() => {
+                const botMsg = `<div class="flex flex-col items-start">
+                    <div class="bg-white p-3 rounded-lg shadow-sm max-w-md border-l-4 border-green-500">
+                        <p class="text-sm text-gray-800">Message processed. Metrics updated to verify sustainability.</p>
+                    </div>
+                </div>`;
+                chatWindow.innerHTML += botMsg;
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 600);
+
+            input.value = "";
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    </script>
+</body>
+</html>
